@@ -1,0 +1,26 @@
+apply plugin: 'java'
+
+version '3.12.3'+System.getProperty('release','-SNAPSHOT')
+
+repositories {
+    mavenLocal()
+    maven {
+        url "http://jars.interlis.ch"
+    }
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    compile group: 'ch.interlis', name: 'ili2pg', version: version
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "ch.ehi.ili2pg.PgMain"
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
